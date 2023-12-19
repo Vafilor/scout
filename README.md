@@ -3,7 +3,7 @@ Introduction
 
 Scout is a cross platform File Browser. At the moment, functionality is pretty limited. Try back later.
 
-![Sample video showing file browsing]("/sample/demo.gif")
+![Sample video showing file browsing](/sample/demo.gif)
 
 ## Features
 * List File names
