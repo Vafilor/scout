@@ -1,9 +1,36 @@
 Introduction
 ============
 
+Scout is a cross platform File Browser. At the moment, functionality is pretty limited. Try back later.
+
+![Sample video showing file browsing]("/sample/demo.gif")
+
+## Features
+* List File names
+* Navigate across directories and drives
+* View basic image, video, and text files
+* Use arrow keys (<- and ->) to navigate files while viewing in a directory
+
+## Why?
+
+Two problems
+
+- [ ] Handle Why 1?
+
+I have a lot of photos on a windows machine in HEIC format. Some folders have thousands of images.
+My goal is to organize them into folders like cats, weather, etc. But it takes a while for windows explorer
+to generate thumbnails for all of the photos and videos. Worse yet, there's no way (afaik) to trigger the process for all files in a folder - so I have to scroll, wait. Scroll, wait. Directory Opus does a decent job, 
+but the image cache size seemed to be not working when I tried it last, so the images generated then regenerated later. Maybe this is fixed now.
+
+- [ ] Handle Why 2?
+
+I want to be able to see images and navigate forward/back with arrow keys. Windows 10/11 kinda does this with the default photo app, but sometimes it has a hard time figuring next/previous images. I could swear it worked in Windows 7, but, who knows.
+
+I want to see if I can create an electron program to help me with these problems.
+
 ## Sources
 
-Icons are from [Bootstrap](https://icons.getbootstrap.com/) 
+* Icons are from [Bootstrap](https://icons.getbootstrap.com/). Thanks Bootstrap!
 
 ## Next up
 
@@ -24,11 +51,8 @@ Icons are from [Bootstrap](https://icons.getbootstrap.com/)
 - [ ] Upgrade to tslint strict
 - [ ] remove unused packages
 - [x] On windows, when you go to root "/", display the list of drives to go to
+- [ ] Update top menu to indicate current state of file listing mode. Is it table or icons?
+- [ ] Update top menu to have dropdowns with options like view hidden files 
+- [ ] Support image caching for thumbnails of various sizes
+- [ ] Choose a file thumbnail size
 - [ ] Better Readme with screenshots and gifs
-
-
-
-// After this, add a menu with options dropdowns like - view hidden files.
-// I want to be able to toggle that. 
-// After that, work on the image caching and rendering.
-// I want to work with HEIC files and mp4 videos - generate thumbnails, cache, etc.
