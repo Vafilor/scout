@@ -55,4 +55,8 @@ export default class FileSystemClient {
     getTextFileContext(path: string): Promise<string> {
         return this.fileServer.getTextFileContents(path);
     }
+
+    getImageIconPath(path: string, width: number, height: number): Promise<string> {
+        return this.fileServer.getImageIconPath(path, width, height);
+    }
 }

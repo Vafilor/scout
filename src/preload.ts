@@ -15,6 +15,8 @@ contextBridge.exposeInMainWorld('appFilesystem', {
     readdir: (path: PathLike, options?: ReaddirOptions)
         : Promise<AppFile[]> => ipcRenderer.invoke('filesystem-list', path, options),
     getUserHomeDirectory: () => ipcRenderer.invoke('filesystem-get-home-directory'),
+    getImageIconPath: (path: PathLike, width: number, height: number): Promise<string> =>
+        ipcRenderer.invoke('filesystem-get-image-icon-path', path, width, height),
 });
 
 contextBridge.exposeInMainWorld('appConfig', {

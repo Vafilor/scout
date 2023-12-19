@@ -17,6 +17,7 @@ export interface IFilesystemAPI {
     stat: (path: PathLike) => Promise<Required<AppFile>>;
     readdir: (path: PathLike, options?: ReaddirOptions) => Promise<AppFile[]>;
     getUserHomeDirectory: () => Promise<string>;
+    getImageIconPath: (path: PathLike, width: number, height: number) => Promise<string>;
 }
 
 export enum FileListMode {
