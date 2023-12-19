@@ -77,7 +77,7 @@ async function filesystemGetImageIconPath(event: IpcMainInvokeEvent, path: strin
   const imageCache = resolve(home, "image_cache");
 
   const ext = extname(path);
-  const outputPath = path.slice(path.length - ext.length) + ".jpg"
+  const outputPath = path.slice(0, path.length - ext.length) + ".jpg"
   const formattedPath = outputPath.replaceAll(sep, "_");
 
   const cachedFilePath = resolve(imageCache, formattedPath);
