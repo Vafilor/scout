@@ -1,4 +1,4 @@
-import { AppFile, IFilesystemAPI } from "../types/filesystem";
+import { AppFile, HeicFileResponse, IFilesystemAPI } from "../types/filesystem";
 
 export default class FileSystemClient {
     private static _instance: FileSystemClient | null;
@@ -58,5 +58,9 @@ export default class FileSystemClient {
 
     getImageIconPath(path: string, width: number, height: number): Promise<string> {
         return this.fileServer.getImageIconPath(path, width, height);
+    }
+
+    getHeicFile(path: string): Promise<HeicFileResponse> {
+        return this.fileServer.getHeicFile(path);
     }
 }

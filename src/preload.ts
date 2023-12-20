@@ -17,6 +17,7 @@ contextBridge.exposeInMainWorld('appFilesystem', {
     getUserHomeDirectory: () => ipcRenderer.invoke('filesystem-get-home-directory'),
     getImageIconPath: (path: PathLike, width: number, height: number): Promise<string> =>
         ipcRenderer.invoke('filesystem-get-image-icon-path', path, width, height),
+    getHeicFile: (path: PathLike) => ipcRenderer.invoke('filesystem-get-heic-file', path)
 });
 
 contextBridge.exposeInMainWorld('appConfig', {

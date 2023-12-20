@@ -9,6 +9,7 @@ import FileSystemClient from "app/services/filesystem-client";
 import VideoFile from "./video-file";
 import Layout from "./layout";
 import PathClient from "app/services/path";
+import HeicImageFile from "./heic-image-file";
 
 interface Props {
     file: AppFile;
@@ -28,6 +29,14 @@ export default function FileView({ file: partialFile }: Props) {
     const isImage = extension ? isImageExtension(extension) : false;
 
     if (isImage) {
+        if (extension?.toLowerCase() === "heic") {
+            return (
+                <Layout>
+                    <HeicImageFile src={partialFile.path} />
+                </Layout>
+            );
+        }
+
         return (
             <Layout>
                 <ImageFile

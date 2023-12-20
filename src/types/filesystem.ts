@@ -18,9 +18,16 @@ export interface IFilesystemAPI {
     readdir: (path: PathLike, options?: ReaddirOptions) => Promise<AppFile[]>;
     getUserHomeDirectory: () => Promise<string>;
     getImageIconPath: (path: PathLike, width: number, height: number) => Promise<string>;
+    getHeicFile: (path: PathLike) => Promise<HeicFileResponse>;
 }
 
 export enum FileListMode {
     List = "list",
     Icons = "icons"
+}
+
+export interface HeicFileResponse {
+    data: Uint8ClampedArray;
+    width: number;
+    height: number;
 }
