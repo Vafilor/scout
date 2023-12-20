@@ -1534,6 +1534,11 @@
   resolved "https://registry.npmjs.org/@types/heic-convert/-/heic-convert-1.2.3.tgz"
   integrity sha512-5LJ2fGuVk/gnOLihoT56xJwrXxfnNepGvrHwlW5ZtT3HS4jO1AqBaAHCxXUpnY9UaD3zYcyxXMRM2fNN1AFF/Q==
 
+"@types/heic-decode@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.npmjs.org/@types/heic-decode/-/heic-decode-1.1.2.tgz"
+  integrity sha512-E1Dw+gpIuiHJcTpFBHm+V/6eYsPhtWook1Z6MIG0H1ONWBp9Z6l3FKydUxFw9GL9JqrWB1qa/uQHdbn/KUeXYw==
+
 "@types/html-minifier-terser@^6.0.0":
   version "6.1.0"
   resolved "https://registry.npmjs.org/@types/html-minifier-terser/-/html-minifier-terser-6.1.0.tgz"

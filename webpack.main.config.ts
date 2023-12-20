@@ -1,4 +1,6 @@
 import type { Configuration } from 'webpack';
+import { resolve } from "node:path";
+
 
 import { rules } from './webpack.rules';
 import { plugins } from './webpack.plugins';
@@ -10,8 +12,8 @@ export const mainConfig: Configuration = {
    */
   entry: {
     index: './src/index.ts',
-    "worker_pool": { import: './src/workers/worker_pool.js', filename: "[name].js" },
-    worker: { import: './src/workers/worker.ts', filename: "[name].js" }
+    "worker-pool": './src/workers/worker_pool.ts',
+    worker: './src/workers/worker.ts'
   },
   // Put your normal webpack config below here
   module: {
@@ -20,5 +22,11 @@ export const mainConfig: Configuration = {
   plugins,
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
+    alias: {
+      app: resolve(__dirname, "src/")
+    }
   },
+  output: {
+    filename: '[name].js'
+  }
 };
