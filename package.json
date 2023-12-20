@@ -72,7 +72,7 @@
     "drizzle-orm": "^0.29.1",
     "electron-squirrel-startup": "^1.0.0",
     "fswin": "^3.23.311",
-    "heic-convert": "^2.1.0",
+    "heic-decode": "^2.0.0",
     "rc-virtual-list": "^3.11.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
