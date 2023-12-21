@@ -6,6 +6,7 @@ import FileIcon from "../file-icon";
 import { isImageExtension, getExtension } from "../../utils/files";
 import { partitionList } from "../../utils/collections";
 import ImageFile from "../file-view/image-file";
+import IconImage from "./icon-image";
 
 interface IconItemProps {
     file: AppFile;
@@ -35,7 +36,7 @@ function IconItem({ file, width, height, setPath }: IconItemProps) {
     if (isImage) {
         return (
             <FileIconWrapper file={file} width={width} height={height} setPath={setPath}>
-                <ImageFile
+                <IconImage
                     width={width}
                     height={childHeight - 8}
                     src={file.path}

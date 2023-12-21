@@ -8,7 +8,8 @@ import useAwaitValue from "app/hooks/useAwaitValue";
 import FileSystemClient from "app/services/filesystem-client";
 import VideoFile from "./video-file";
 import Layout from "./layout";
-import PathClient from "app/services/path";
+import HeicImageFile from "./heic-image-file";
+import Rectangle from "../loading/rectangle";
 
 interface Props {
     file: AppFile;
@@ -28,6 +29,14 @@ export default function FileView({ file: partialFile }: Props) {
     const isImage = extension ? isImageExtension(extension) : false;
 
     if (isImage) {
+        if (extension?.toLowerCase() === "heic") {
+            return (
+                <Layout>
+                    <HeicImageFile src={partialFile.path} />
+                </Layout>
+            );
+        }
+
         return (
             <Layout>
                 <ImageFile
@@ -55,9 +64,12 @@ export default function FileView({ file: partialFile }: Props) {
         );
     }
 
-    // TODO better loading UI
     if (loading || !file) {
-        return <div>Loading</div>;
+        return (
+            <Layout>
+                <Rectangle />
+            </Layout>
+        );
     }
 
     if (!viewLargeFile && isTooBig(file.size)) {
