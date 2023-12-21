@@ -112,7 +112,7 @@ export function FileBrowser({ path: initialPath, config, className }: Props) {
 
 export default function PathFileBrowser() {
     // These values provide the initial state for the application
-    // It is not necessary for them to be up-to-date
+    // It is not necessary for them to update the FileBrowser on change, so we only get them once.
     const { value: homeDirectory, loading: homeDirectoryLoading } = useAwaitValue(() => FileSystemClient.instance.getUserHomeDirectory());
     const { value: config, loading: configLoading } = useAwaitValue(() => Configuration.instance.getOptions());
 

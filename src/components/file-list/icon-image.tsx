@@ -1,6 +1,7 @@
 import useAwaitValue from "app/hooks/useAwaitValue";
 import FileSystemClient from "app/services/filesystem-client";
 import ImageFile from "../file-view/image-file";
+import Rectangle from "../loading/rectangle";
 
 type Props = Omit<
     React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>,
@@ -9,9 +10,8 @@ type Props = Omit<
 export default function IconImage({ src, width, height, ...otherProps }: Props) {
     const { value: cachedImagePath, loading, error } = useAwaitValue(() => FileSystemClient.instance.getImageIconPath(src, width, height));
 
-    // TODO loading UI
     if (loading) {
-        return <div>loading</div>;
+        return <Rectangle width={width} height={height} />
     }
 
     if (error) {
