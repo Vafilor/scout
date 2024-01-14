@@ -9,6 +9,7 @@ import useAwaitValue from "app/hooks/useAwaitValue";
 import Configuration from "app/services/configuration";
 import useFileBrowser from "./useFileBrowser";
 import { ConfigurationOptions } from "app/configuration/store";
+import { SortableFileColumn } from "app/db/files-repository";
 
 interface Props {
     path: string;
@@ -37,7 +38,12 @@ export function FileBrowser({ path: initialPath, config, className }: Props) {
         } else {
             setCurrentFile(undefined);
 
-            const files = await FileSystemClient.instance.listDir(newPath);
+            const files = await FileSystemClient.instance.listDir(newPath, {
+                sort: {
+                    column: SortableFileColumn.CanonicalName,
+                    direction: "asc"
+                }
+            });
 
             setAllFiles(files);
         }

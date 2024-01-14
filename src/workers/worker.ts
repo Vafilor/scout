@@ -13,7 +13,7 @@ function main() {
     const parent = parentPort;
     parent.on('message', async (task: WorkerTask) => {
         if (task.type === TaskAction.CreateIcon) {
-            await createIcon(task.inputPath, task.outputPath, task.width, task.height);
+            await createIcon(task);
 
             parent.postMessage(task.inputPath);
         } else if (task.type === TaskAction.LoadHeicData) {
