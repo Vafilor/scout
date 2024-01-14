@@ -23,7 +23,12 @@ export function isVideoExtension(extension: string): boolean {
     const e = extension.toLowerCase();
 
     return e === "mp4" ||
-        e === "webm";
+        e === "webm" ||
+        e === "mov";
+}
+
+export function canCreateImageIcon(extension: string): boolean {
+    return isImageExtension(extension) || isVideoExtension(extension);
 }
 
 const fileSizes = ["B", "KB", "MB", "GB", "TB"];

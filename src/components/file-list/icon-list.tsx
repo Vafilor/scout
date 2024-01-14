@@ -3,7 +3,7 @@ import List from "rc-virtual-list";
 import { useMemo, useRef } from "react";
 import { AppFile } from "../../types/filesystem";
 import FileIcon from "../file-icon";
-import { isImageExtension, getExtension } from "../../utils/files";
+import { isImageExtension, getExtension, canCreateImageIcon } from "../../utils/files";
 import { partitionList } from "../../utils/collections";
 import ImageFile from "../file-view/image-file";
 import IconImage from "./icon-image";
@@ -29,11 +29,11 @@ function FileIconWrapper({ file, children, width, height, setPath }: IconItemPro
 
 function IconItem({ file, width, height, setPath }: IconItemProps) {
     const extension = getExtension(file.name) || "";
-    const isImage = isImageExtension(extension);
+    const canCreateIcon = canCreateImageIcon(extension);
 
     const childHeight = height - 24;
 
-    if (isImage) {
+    if (canCreateIcon) {
         return (
             <FileIconWrapper file={file} width={width} height={height} setPath={setPath}>
                 <IconImage
