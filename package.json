@@ -11,6 +11,7 @@
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx .",
     "typecheck": "npx tsc --noEmit",
+    "make:migrations": "drizzle-kit generate:sqlite",
     "test": "jest"
   },
   "keywords": [
@@ -42,7 +43,7 @@
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
     "autoprefixer": "^10.4.16",
     "css-loader": "^6.0.0",
-    "drizzle-kit": "^0.20.6",
+    "drizzle-kit": "^0.20.7",
     "electron": "27.1.3",
     "eslint": "^8.0.1",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -68,7 +69,9 @@
   "dependencies": {
     "@libsql/client": "^0.4.0-pre.5",
     "@radix-ui/react-toolbar": "^1.0.4",
+    "@types/better-sqlite3": "^7.6.8",
     "@uidotdev/usehooks": "^2.4.1",
+    "better-sqlite3": "^9.2.2",
     "drivelist": "^11.1.0",
     "drizzle-orm": "^0.29.1",
     "electron-squirrel-startup": "^1.0.0",
