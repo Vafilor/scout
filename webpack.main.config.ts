@@ -12,7 +12,7 @@ export const mainConfig: Configuration = {
    */
   entry: {
     index: './src/index.ts',
-    "worker-pool": './src/workers/worker_pool.ts',
+    "worker-pool": './src/workers/worker-pool.ts',
     worker: './src/workers/worker.ts'
   },
   // Put your normal webpack config below here
