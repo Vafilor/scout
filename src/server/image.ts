@@ -4,7 +4,7 @@ import sharp from "sharp";
 import decode from 'heic-decode';
 
 import { readFile } from "node:fs/promises";
-import extractFrame from "ffmpeg-extract-frame";
+import FfmpegUtils from "./ffmpeg-utils";
 
 interface IconArgument {
     inputPath: string;
@@ -28,11 +28,12 @@ async function createHeicIcon({ inputPath, outputPath, width, height }: IconArgu
 
 
 async function createVideoIcon({ inputPath, outputPath, width, height }: IconArgument) {
-    // TODO width and height
-    await extractFrame({
-        input: inputPath,
-        output: outputPath,
-        offset: 1000 // seek offset in milliseconds
+    await FfmpegUtils.instance.extractFrame({
+        inputPath: inputPath,
+        outputPath: outputPath,
+        offsetMs: 1000,
+        width,
+        height
     });
 }
 

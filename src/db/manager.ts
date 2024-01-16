@@ -4,6 +4,7 @@ import SQLiteDatabase from 'better-sqlite3';
 import { resolve } from "node:path";
 import FilesRepository from './files-repository';
 import ImageCacheRepository from './image-cache-repository';
+import { getDrizzleMigrationsDirectory } from 'app/configuration/constants';
 
 export default class Manager {
     private db: BetterSQLite3Database<Record<string, never>>;
@@ -20,7 +21,7 @@ export default class Manager {
 
     migrate(): void {
         sqliteMigrate(this.db, {
-            migrationsFolder: resolve(__dirname, "..", "..", "drizzle")
+            migrationsFolder: getDrizzleMigrationsDirectory()
         });
     }
 
