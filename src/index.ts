@@ -63,19 +63,12 @@ function filesystemGetImageIconPath(event: IpcMainInvokeEvent, path: string, wid
 }
 
 async function filesystemGetHeicFile(event: IpcMainInvokeEvent, path: string): Promise<HeicFileResponse> {
-  return new Promise((resolve, reject) => {
-    pool.runTask({
-      type: TaskAction.LoadHeicData,
-      path,
-    }, (err: any, result: any) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-
-      resolve(result);
-    });
+  const result = await pool.runTaskPromise({
+    type: TaskAction.LoadHeicData,
+    path,
   });
+
+  return result as HeicFileResponse;
 }
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.

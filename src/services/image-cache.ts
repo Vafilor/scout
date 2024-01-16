@@ -69,37 +69,34 @@ export default class ImageCache {
         const outputName = randomUUID() + ".jpg"
         const cachedFilePath = resolve(this.cachePath, outputName);
 
-        return new Promise((resolve, reject) => {
-            this.workerPool.runTask({
+        try {
+            await this.workerPool.runTaskPromise({
                 type: TaskAction.CreateIcon,
                 inputPath: path,
                 outputPath: cachedFilePath,
                 width,
                 height
-            }, async (err) => {
-                if (err) {
-                    this.pendingKeys.delete(key);
-                    reject(err);
-                    return;
-                }
-
-                if (dbRecord === null) {
-                    await this.imageCacheRepository.insert({
-                        key,
-                        lastModifiedTimeMs: stats.mtimeMs,
-                        cachePath: cachedFilePath
-                    });
-                } else {
-                    await this.imageCacheRepository.updateForKey(key, {
-                        lastModifiedTimeMs: stats.mtimeMs,
-                        cachePath: cachedFilePath
-                    });
-                }
-
-                this.pendingKeys.delete(key);
-
-                resolve(cachedFilePath);
             });
-        });
+        } catch (err: unknown) {
+            this.pendingKeys.delete(key);
+            throw err;
+        }
+
+        if (dbRecord === null) {
+            await this.imageCacheRepository.insert({
+                key,
+                lastModifiedTimeMs: stats.mtimeMs,
+                cachePath: cachedFilePath
+            });
+        } else {
+            await this.imageCacheRepository.updateForKey(key, {
+                lastModifiedTimeMs: stats.mtimeMs,
+                cachePath: cachedFilePath
+            });
+        }
+
+        this.pendingKeys.delete(key);
+
+        return cachedFilePath;
     }
 }

@@ -111,6 +111,19 @@ export default class WorkerPool extends EventEmitter {
         worker.postMessage(task);
     }
 
+    runTaskPromise(task: WorkerTask): Promise<unknown> {
+        return new Promise((resolve, reject) => {
+            this.runTask(task, (err: Error, result: unknown) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                resolve(result);
+            });
+        });
+    }
+
     close() {
         for (const worker of this.workers) {
             worker.terminate();
