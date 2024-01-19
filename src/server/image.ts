@@ -5,6 +5,7 @@ import decode from 'heic-decode';
 
 import { readFile } from "node:fs/promises";
 import FfmpegUtils from "./ffmpeg-utils";
+const VIDEO_EXTENSIONS = new Set([".mov", ".webm", ".mp4"]);
 
 interface IconArgument {
     inputPath: string;
@@ -44,7 +45,7 @@ export async function createIcon(args: IconArgument): Promise<void> {
 
     if (ext === ".heic") {
         await createHeicIcon(args);
-    } else if (ext === ".mov" || ext === ".webm") {
+    } else if (VIDEO_EXTENSIONS.has(ext)) {
         await createVideoIcon(args);
     } else {
         await sharp(inputPath).resize(width, height).jpeg().toFile(outputPath);
