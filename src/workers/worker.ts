@@ -4,11 +4,15 @@ import { TaskAction, WorkerTask } from "./types";
 import { readFile } from "node:fs/promises";
 import decode from 'heic-decode';
 import { createIcon } from "app/server/image";
+import { workerData } from "node:worker_threads";
+import { Constants, ConstantsArguments } from "app/configuration/constants";
 
 function main() {
     if (parentPort === null) {
         return;
     }
+
+    Constants.init(workerData as ConstantsArguments);
 
     const parent = parentPort;
     parent.on('message', async (task: WorkerTask) => {

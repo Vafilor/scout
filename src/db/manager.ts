@@ -1,10 +1,9 @@
 import { BetterSQLite3Database, drizzle } from 'drizzle-orm/better-sqlite3';
 import { migrate as sqliteMigrate } from "drizzle-orm/better-sqlite3/migrator";
 import SQLiteDatabase from 'better-sqlite3';
-import { resolve } from "node:path";
 import FilesRepository from './files-repository';
 import ImageCacheRepository from './image-cache-repository';
-import { getDrizzleMigrationsDirectory } from 'app/configuration/constants';
+import { Constants } from 'app/configuration/constants';
 
 export default class Manager {
     private db: BetterSQLite3Database<Record<string, never>>;
@@ -21,7 +20,7 @@ export default class Manager {
 
     migrate(): void {
         sqliteMigrate(this.db, {
-            migrationsFolder: getDrizzleMigrationsDirectory()
+            migrationsFolder: Constants.instance.getDrizzleMigrationsDirectory()
         });
     }
 

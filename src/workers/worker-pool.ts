@@ -3,6 +3,7 @@ import { EventEmitter } from 'node:events';
 import { resolve } from 'node:path';
 import { Worker } from 'node:worker_threads';
 import { WorkerTask } from './types';
+import { ConstantsArguments } from 'app/configuration/constants';
 
 export type TaskInfoCallback = (err: Error | null, result: unknown) => void;
 
@@ -30,7 +31,7 @@ export default class WorkerPool extends EventEmitter {
     private tasks: WorkerPoolTask[] = [];
     private workerTasks = new Map<Worker, WorkerPoolTaskInfo>();
 
-    constructor(numThreads: number) {
+    constructor(numThreads: number, private constants: ConstantsArguments) {
         super();
 
         for (let i = 0; i < numThreads; i++) {
@@ -51,7 +52,7 @@ export default class WorkerPool extends EventEmitter {
 
     addNewWorker() {
         // TODO is there a nicer way to get this dependency instead of knowing it eventually becomes .js?
-        const worker = new Worker(resolve(__dirname, 'worker.js'));
+        const worker = new Worker(resolve(__dirname, 'worker.js'), { workerData: this.constants });
         worker.on('message', (result) => {
             // In case of success: Call the callback that was passed to `runTask`,
             // remove the `TaskInfo` associated with the Worker, and mark it as free

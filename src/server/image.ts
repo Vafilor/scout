@@ -5,6 +5,8 @@ import decode from 'heic-decode';
 
 import { readFile } from "node:fs/promises";
 import FfmpegUtils from "./ffmpeg-utils";
+import { Constants } from "app/configuration/constants";
+
 const VIDEO_EXTENSIONS = new Set([".mov", ".webm", ".mp4"]);
 
 interface IconArgument {
@@ -29,7 +31,9 @@ async function createHeicIcon({ inputPath, outputPath, width, height }: IconArgu
 
 
 async function createVideoIcon({ inputPath, outputPath, width, height }: IconArgument) {
-    await FfmpegUtils.instance.extractFrame({
+    const ffmpeg = new FfmpegUtils(Constants.instance.getFfmpegBinaryPath());
+
+    await ffmpeg.extractFrame({
         inputPath: inputPath,
         outputPath: outputPath,
         offsetMs: 1000,

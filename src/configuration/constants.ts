@@ -6,19 +6,48 @@ export enum ConfigurationNames {
     FileDatabase = "file_database.db"
 }
 
-export function getFfmpegBinaryPath(): string {
-    if (process.env.APP_MODE === 'dev') {
-        const extension = process.platform === "win32" ? ".exe" : "";
-        return join(__dirname, "ffmpeg" + extension);
-    } else {
-        return join(process.resourcesPath, "ffmpeg");
-    }
+export interface ConstantsArguments {
+    appMode: string;
+    dirname: string;
+    resourcesPath: string;
 }
 
-export function getDrizzleMigrationsDirectory(): string {
-    if (process.env.APP_MODE === 'dev') {
-        return join(__dirname, "..", "..", "drizzle")
-    } else {
-        return join(process.resourcesPath, "drizzle");
+export class Constants {
+    private constructor(private readonly args: ConstantsArguments) {
+    }
+
+    private static _instance: Constants | null = null;
+
+    static init(args: ConstantsArguments): Constants {
+        if (!Constants._instance) {
+            Constants._instance = new Constants(args);
+        }
+
+        return Constants._instance;
+    }
+
+    static get instance(): Constants {
+        if (!Constants._instance) {
+            throw new Error("Constants has not been initialized. Call Constants.init(...) first");
+        }
+
+        return Constants._instance;
+    }
+
+    getFfmpegBinaryPath(): string {
+        const extension = process.platform === "win32" ? ".exe" : "";
+        if (this.args.appMode === 'dev') {
+            return join(this.args.dirname, "ffmpeg" + extension);
+        } else {
+            return join(this.args.resourcesPath, "ffmpeg" + extension);
+        }
+    }
+
+    getDrizzleMigrationsDirectory(): string {
+        if (this.args.appMode === 'dev') {
+            return join(this.args.dirname, "..", "..", "drizzle")
+        } else {
+            return join(this.args.resourcesPath, "drizzle");
+        }
     }
 }
