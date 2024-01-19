@@ -1,6 +1,7 @@
 import * as fswin from "fswin";
 import FilesystemServer from "./filesystem-server";
 import { Dirent, Stats } from "node:fs";
+import { AppFile } from "app/types/filesystem";
 
 
 class WindowsDriveDirent extends Dirent {
@@ -88,21 +89,25 @@ class WindowsDriveStats extends Stats {
 }
 
 export default class WindowsFilesystemServer extends FilesystemServer {
-    protected async *_listDirectoryInPartitions(path: string, partitionSize: number) {
+    async listDirectory(path: string): Promise<AppFile[]> {
         if (path === "/") {
-            const files = [];
+            const files: AppFile[] = [];
 
             const drives = fswin.getLogicalDriveListSync();
             for (const drive of Object.keys(drives)) {
+                const dirent = new WindowsDriveDirent(drive);
+                const stats = new WindowsDriveStats(drive);
                 files.push({
-                    dirent: new WindowsDriveDirent(drive),
-                    stats: new WindowsDriveStats(drive)
+                    name: dirent.name,
+                    path: dirent.path,
+                    size: stats.size,
+                    isFile: dirent.isFile()
                 })
             }
 
-            yield files;
+            return files;
         }
 
-        yield* super._listDirectoryInPartitions(path, partitionSize);
+        return super.listDirectory(path);
     }
 }

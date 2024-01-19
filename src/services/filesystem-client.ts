@@ -1,4 +1,3 @@
-import { ListFileOptions } from "app/db/files-repository";
 import { AppFile, HeicFileResponse, IFilesystemAPI } from "../types/filesystem";
 
 export default class FileSystemClient {
@@ -25,8 +24,8 @@ export default class FileSystemClient {
     private constructor(private fileServer: IFilesystemAPI) {
     }
 
-    async listDir(path: string, options?: ListFileOptions): Promise<AppFile[]> {
-        const results = await this.fileServer.readdir(path, options);
+    async listDir(path: string): Promise<AppFile[]> {
+        const results = await this.fileServer.readdir(path);
 
         this.fileCache.clear();
         for (const file of results) {

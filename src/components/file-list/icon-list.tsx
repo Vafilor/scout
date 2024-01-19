@@ -3,9 +3,8 @@ import List from "rc-virtual-list";
 import { useMemo, useRef } from "react";
 import { AppFile } from "../../types/filesystem";
 import FileIcon from "../file-icon";
-import { isImageExtension, getExtension, canCreateImageIcon } from "../../utils/files";
+import { getExtension, canCreateImageIcon } from "../../utils/files";
 import { partitionList } from "../../utils/collections";
-import ImageFile from "../file-view/image-file";
 import IconImage from "./icon-image";
 
 interface IconItemProps {

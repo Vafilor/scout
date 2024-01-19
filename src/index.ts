@@ -9,7 +9,6 @@ import { TaskAction } from './workers/types';
 import Manager from './db/manager';
 import { ConfigurationNames, Constants } from './configuration/constants';
 import FilesystemServer from './services/filesystem-server';
-import { ListFileOptions } from './db/files-repository';
 import WindowsFilesystemServer from './services/windows-filesystem-server';
 import ImageCache from './services/image-cache';
 
@@ -37,10 +36,8 @@ function formatIxAppURL(url: string) {
   return url;
 }
 
-async function filesystemList(event: IpcMainInvokeEvent, path: string, options?: ListFileOptions) {
-  await filesystemServer.processDirectory(path);
-
-  return await filesystemServer.listDirectory(path, options);
+async function filesystemList(event: IpcMainInvokeEvent, path: string) {
+  return await filesystemServer.listDirectory(path);
 }
 
 async function filesystemFileStat(event: IpcMainInvokeEvent, path: string): Promise<AppFile> {
@@ -120,9 +117,9 @@ app.whenReady().then(async () => {
   await database.migrate()
 
   if (process.platform === "win32") {
-    filesystemServer = new WindowsFilesystemServer(database.files);
+    filesystemServer = new WindowsFilesystemServer();
   } else {
-    filesystemServer = new FilesystemServer(database.files);
+    filesystemServer = new FilesystemServer();
   }
 
   imageCache = new ImageCache(
