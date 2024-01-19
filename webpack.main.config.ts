@@ -6,6 +6,7 @@ import { platform } from "node:os";
 import { rules } from './webpack.rules';
 import { plugins } from './webpack.plugins';
 
+import CopyPlugin from "copy-webpack-plugin";
 import CopyFileWebpackPlugin from "./util/CopyFileWebpackPlugin";
 
 const mainPlugins: WebpackPluginInstance[] = plugins.slice();
@@ -18,6 +19,15 @@ if (process.env.APP_MODE === "dev") {
     })
   );
 }
+
+mainPlugins.push(new CopyPlugin({
+  patterns: [
+    {
+      from: join(__dirname, "node_modules", "fluent-ffmpeg"),
+      to: "fluent-ffmpeg"
+    },
+  ],
+}))
 
 export const mainConfig: Configuration = {
   /**
@@ -43,4 +53,7 @@ export const mainConfig: Configuration = {
   output: {
     filename: '[name].js'
   },
+  externals: {
+    'fluent-ffmpeg': 'fluent-ffmpeg'
+  }
 };
