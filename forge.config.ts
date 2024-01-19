@@ -9,12 +9,15 @@ import { WebpackPlugin } from '@electron-forge/plugin-webpack';
 import { mainConfig } from './webpack.main.config';
 import { rendererConfig } from './webpack.renderer.config';
 import { join } from "node:path";
+import { platform } from "node:os";
+
+const binExtension = platform() === "win32" ? ".exe" : "";
 
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
     extraResource: [
-      join(__dirname, "node_modules", "ffmpeg-static", "ffmpeg"), // downloaded ffmpeg
+      join(__dirname, "node_modules", "ffmpeg-static", "ffmpeg" + binExtension), // downloaded ffmpeg
       join(__dirname, "drizzle") // db migrations
     ]
   },
