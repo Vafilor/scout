@@ -6,10 +6,10 @@ export enum ConfigurationNames {
     FileDatabase = "file_database.db"
 }
 
-// TODO the extension might vary based on os
 export function getFfmpegBinaryPath(): string {
     if (process.env.APP_MODE === 'dev') {
-        return join(__dirname, "ffmpeg");
+        const extension = process.platform === "win32" ? ".exe" : "";
+        return join(__dirname, "ffmpeg" + extension);
     } else {
         return join(process.resourcesPath, "ffmpeg");
     }

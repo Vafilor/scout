@@ -1,6 +1,6 @@
 import * as fswin from "fswin";
 import FilesystemServer from "./filesystem-server";
-import { Dirent, Stats } from "original-fs";
+import { Dirent, Stats } from "node:fs";
 
 
 class WindowsDriveDirent extends Dirent {

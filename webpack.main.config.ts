@@ -1,6 +1,7 @@
 import type { Configuration } from 'webpack';
 import { join, resolve } from "node:path";
 import { WebpackPluginInstance } from "webpack";
+import { platform } from "node:os";
 
 import { rules } from './webpack.rules';
 import { plugins } from './webpack.plugins';
@@ -9,10 +10,10 @@ import CopyFileWebpackPlugin from "./util/CopyFileWebpackPlugin";
 
 const mainPlugins: WebpackPluginInstance[] = plugins.slice();
 if (process.env.APP_MODE === "dev") {
-  // TODO ffmpeg binary name might vary based on OS - need to test.
+  const extension = platform() === "win32" ? ".exe" : "";
   mainPlugins.push(
     new CopyFileWebpackPlugin({
-      sourcePath: join(__dirname, "node_modules", "ffmpeg-static", "ffmpeg"),
+      sourcePath: join(__dirname, "node_modules", "ffmpeg-static", "ffmpeg" + extension),
       permissions: 0o755
     })
   );
