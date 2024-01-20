@@ -25,7 +25,7 @@ export default class FileSystemClient {
     }
 
     async listDir(path: string): Promise<AppFile[]> {
-        const results = await this.fileServer.readdir(path, { withFileTypes: false });
+        const results = await this.fileServer.readdir(path);
 
         this.fileCache.clear();
         for (const file of results) {

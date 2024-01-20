@@ -19,7 +19,7 @@ module.exports = {
     "tsconfigRootDir": __dirname,
   },
   root: true,
-  ignorePatterns: ["webpack.*", ".eslintrc.js", "forge.config.ts"],
+  ignorePatterns: ["webpack.*", ".eslintrc.js", "forge.config.ts", "drizzle.config.ts", "util/*"],
   plugins: ["import"],
   settings: {
     "import/resolver": {
