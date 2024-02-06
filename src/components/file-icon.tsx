@@ -1,16 +1,17 @@
+import { FileType } from "app/types/filesystem";
 import FileImage from "../assets/images/file-earmark.svg";
 import FolderImage from "../assets/images/folder.svg";
 
 interface Props {
     className?: string;
-    isFile: boolean; // If false, then its a folder.
+    type: FileType;
     extension: string;
     width?: string | number;
     height?: string | number;
 }
 
-export default function FileIcon({ isFile, className, width, height, extension }: Props) {
-    const imgSrc = isFile ? FileImage : FolderImage;
+export default function FileIcon({ type, className, width, height, extension }: Props) {
+    const imgSrc = type === FileType.File ? FileImage : FolderImage;
 
     return <img width={width} height={height} className={className} src={imgSrc} style={{ height }} />
 }

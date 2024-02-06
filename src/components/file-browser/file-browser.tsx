@@ -2,13 +2,14 @@ import FileSystemClient from "../../services/filesystem-client";
 import FileList from "../file-list/list";
 import { useCallback, useEffect } from "react";
 import NavigationToolbar from "../path-navigator/toolbar";
-import usePathNavigator from "../path-navigator/usePathNavigator";
 import FilesystemToolbar from "../filesystem-toolbar";
 import FileView from "../file-view/file-view";
 import useAwaitValue from "app/hooks/useAwaitValue";
 import Configuration from "app/services/configuration";
 import useFileBrowser from "./useFileBrowser";
 import { ConfigurationOptions } from "app/configuration/store";
+import FileViewToolbar from "../file-view/file-view-toolbar";
+import { FileType } from "app/types/filesystem";
 
 interface Props {
     path: string;
@@ -16,39 +17,22 @@ interface Props {
     className?: string;
 }
 
-export function FileBrowser({ path: initialPath, config, className }: Props) {
+export function FileBrowser({ path, config, className }: Props) {
     const {
         state,
         currentFile,
-        setCurrentFile,
-        setAllFiles,
+        pathInfo,
+        setPath,
+        setChildPath,
+        goUp,
+        goBack,
+        goForward,
         getNextFile,
         getPreviousFile,
         setFileListMode,
-        setViewHiddenFiles
-    } = useFileBrowser(config);
-
-    const { path, state: pathState, goBack, goForward, goUp, setPath } = usePathNavigator(initialPath);
-
-    const getFilesForPath = useCallback(async (newPath: string) => {
-        const fileInfo = await FileSystemClient.instance.quickStat(newPath);
-        if (fileInfo.isFile) {
-            setCurrentFile(fileInfo);
-        } else {
-            setCurrentFile(undefined);
-
-            const files = await FileSystemClient.instance.listDir(newPath);
-
-            setAllFiles(files);
-        }
-    }, [setCurrentFile, setAllFiles]);
-
-
-    useEffect(() => {
-        // TODO add support to abort file operations on unmounting
-        getFilesForPath(path);
-    }, [getFilesForPath, path]);
-
+        setViewHiddenFiles,
+        reloadDirectory
+    } = useFileBrowser(path, config);
 
     const handleKeyPress = useCallback((ev: KeyboardEvent) => {
         const key = ev.key;
@@ -56,18 +40,18 @@ export function FileBrowser({ path: initialPath, config, className }: Props) {
             if (currentFile !== undefined) {
                 const nextFile = getNextFile();
                 if (nextFile) {
-                    setPath(nextFile.path);
+                    setChildPath(nextFile.path);
                 }
             }
         } else if (key === "ArrowLeft") {
             if (currentFile !== undefined) {
                 const previousFile = getPreviousFile();
                 if (previousFile) {
-                    setPath(previousFile.path);
+                    setChildPath(previousFile.path);
                 }
             }
         }
-    }, [currentFile, setPath, getNextFile, getPreviousFile]);
+    }, [currentFile, setChildPath, getNextFile, getPreviousFile]);
 
     useEffect(() => {
         window.addEventListener("keyup", handleKeyPress);
@@ -79,32 +63,36 @@ export function FileBrowser({ path: initialPath, config, className }: Props) {
 
     return (
         <div className={className}>
-            <NavigationToolbar
-                path={path}
-                history={pathState.history}
-                historyIndex={pathState.historyIndex}
-                setPath={setPath}
-                goUp={goUp}
-                goBack={goBack}
-                goFoward={goForward}
-                refreshPath={() => getFilesForPath(path)}
-            />
-
-            {currentFile ? (
-                <>
-                    <div></div>
-                    <FileView key={currentFile.path} file={currentFile} />
-                </>
+            {pathInfo && (
+                <NavigationToolbar
+                    pathInfo={pathInfo}
+                    history={state.history}
+                    historyIndex={state.historyIndex}
+                    setPath={setPath}
+                    goUp={goUp}
+                    goBack={goBack}
+                    goFoward={goForward}
+                    refreshPath={() => reloadDirectory()}
+                />
+            )}
+            {pathInfo?.type === undefined ? (
+                <div className="h-[40px] border-slate-300 border-b"></div>
+            ) : pathInfo.type === FileType.File ? (
+                <FileViewToolbar name={currentFile?.name || ""}></FileViewToolbar>
             ) : (
-                <>
-                    <FilesystemToolbar
-                        mode={state.fileListMode}
-                        setMode={setFileListMode}
-                        viewHiddenFiles={state.viewHiddenFiles}
-                        setViewHiddenFiles={setViewHiddenFiles}
-                    />
-                    <FileList files={state.files} mode={state.fileListMode} setPath={setPath} />
-                </>
+                <FilesystemToolbar
+                    mode={state.fileListMode}
+                    setMode={setFileListMode}
+                    viewHiddenFiles={state.showHiddenFiles}
+                    setViewHiddenFiles={setViewHiddenFiles}
+                />
+            )}
+            {state.loadingFileContent ? (
+                <div>Loading</div>
+            ) : currentFile ? (
+                <FileView key={currentFile.path} file={currentFile} />
+            ) : (
+                <FileList files={state.files} mode={state.fileListMode} setPath={setChildPath} />
             )}
         </div>
     );

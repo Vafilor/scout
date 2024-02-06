@@ -48,7 +48,7 @@ function IconItem({ file, width, height, setPath }: IconItemProps) {
 
     return (
         <FileIconWrapper file={file} width={width} height={height} setPath={setPath}>
-            <FileIcon isFile={file.isFile} width={width} height={childHeight} extension={extension} />
+            <FileIcon type={file.type} width={width} height={childHeight} extension={extension} />
         </FileIconWrapper>
     );
 }
