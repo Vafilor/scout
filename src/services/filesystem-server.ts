@@ -1,5 +1,6 @@
 import { AppFile } from "app/types/filesystem";
 import { opendir, stat } from "node:fs/promises";
+import { fileStatToType } from "./utils";
 
 export default class FilesystemServer {
     async listDirectory(path: string): Promise<AppFile[]> {
@@ -12,7 +13,7 @@ export default class FilesystemServer {
                 name: dirent.name,
                 path: dirent.path,
                 size: stats.size,
-                isFile: dirent.isFile()
+                type: fileStatToType(stats)
             });
         }
 

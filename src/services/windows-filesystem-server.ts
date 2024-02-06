@@ -1,7 +1,7 @@
 import * as fswin from "fswin";
 import FilesystemServer from "./filesystem-server";
 import { Dirent, Stats } from "node:fs";
-import { AppFile } from "app/types/filesystem";
+import { AppFile, FileType } from "app/types/filesystem";
 
 
 class WindowsDriveDirent extends Dirent {
@@ -101,7 +101,7 @@ export default class WindowsFilesystemServer extends FilesystemServer {
                     name: dirent.name,
                     path: dirent.path,
                     size: stats.size,
-                    isFile: dirent.isFile()
+                    type: FileType.Directory
                 })
             }
 

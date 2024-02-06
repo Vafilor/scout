@@ -1,9 +1,15 @@
 import { ObjectEncodingOptions, PathLike } from "node:fs";
 
+export enum FileType {
+    File,
+    Directory,
+    Socket
+}
+
 export interface AppFile {
     name: string;
     path: string;
-    isFile: boolean;
+    type: FileType;
     size?: number; // bytes
 }
 
