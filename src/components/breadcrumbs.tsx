@@ -20,7 +20,7 @@ function BreadcrumbPart({ children, onClick }: { children: React.ReactNode, onCl
         <>
             <img src={ChevronRightImage} className="font-bold" />
             <button
-                className="hover:bg-slate-200 rounded px-[4px]"
+                className="text-nowrap hover:bg-slate-200 rounded px-[4px]"
                 onClick={() => onClick?.()}>
                 {children}
             </button>
@@ -42,7 +42,7 @@ export default function Breadcrumbs({ path, className, onClick }: Props) {
 
     return (
         <div className={"flex gap-2 " + className}>
-            <button type="button" className="hover:bg-slate-200 rounded px-[4px]" onClick={() => onPartClicked("/", -1)}>
+            <button type="button" className="hover:bg-slate-200 rounded px-[4px] shrink-0" onClick={() => onPartClicked("/", -1)}>
                 <img src={DisplayImage} />
             </button>
             {parts.map((part, index) => {
