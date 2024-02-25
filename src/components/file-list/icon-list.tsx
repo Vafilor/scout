@@ -1,6 +1,5 @@
-import { useWindowSize } from "@uidotdev/usehooks";
 import List from "rc-virtual-list";
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { AppFile } from "../../types/filesystem";
 import FileIcon from "../file-icon";
 import { getExtension, canCreateImageIcon } from "../../utils/files";
@@ -82,7 +81,7 @@ export default function IconList({ files, gap: initialGap, iconSize, width, heig
         const result = partitionList<AppFile | null>(files, itemsPerLine).map((partition, index) => ({
             key: partition.length && partition[0] ? partition[0].path : index,
             files: partition
-        })); X
+        }));
 
         if (result.length) {
             const lastFiles = result[result.length - 1].files;
