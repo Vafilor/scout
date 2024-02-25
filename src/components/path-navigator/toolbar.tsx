@@ -6,6 +6,7 @@ import ArrowClockwiseImage from "../../assets/images/arrow-clockwise.svg";
 import PathClient from "app/services/path";
 import { PathInfo } from "../file-browser/reducer";
 import { canGoBack, canGoForward } from "../file-browser/utils";
+import { forwardRef } from "react";
 
 interface Props {
     pathInfo: PathInfo;
@@ -33,9 +34,9 @@ function NavigationButton({ children, disabled, onClick }: NavigationButtonProps
     );
 }
 
-export default function NavigationToolbar({ pathInfo, history, historyIndex, setPath, goBack, goFoward, goUp, refreshPath, className }: Props) {
-    return (
-        <div className="p-2 bg-slate-200 border-b border-slate-300 flex gap-2">
+const NavigationToolbar = forwardRef<HTMLDivElement, Props>(
+    ({ pathInfo, history, historyIndex, setPath, goBack, goFoward, goUp, refreshPath, className }, ref) => (
+        <div ref={ref} className={`p-2 bg-slate-200 border-b border-slate-300 flex gap-2 ${className}`}>
             <NavigationButton disabled={!canGoBack(historyIndex)} onClick={goBack}>
                 <img src={ArrowLeftShortImage} className="h-[24px]" />
             </NavigationButton>
@@ -50,6 +51,8 @@ export default function NavigationToolbar({ pathInfo, history, historyIndex, set
             </NavigationButton>
             <div className="w-[1em]"></div>
             <Breadcrumbs path={pathInfo.path} className="bg-white p-1 pl-2 rounded grow overflow-auto" onClick={(event) => setPath(event.path)} />
-        </div>
-    );
-}
+        </div >
+    )
+);
+
+export default NavigationToolbar;
