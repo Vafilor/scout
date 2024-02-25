@@ -1,10 +1,11 @@
 interface Props {
+    className?: string;
     children?: React.ReactNode;
 }
 
-export default function Layout({ children }: Props) {
+export default function Layout({ children, className }: Props) {
     return (
-        <div className="bg-black flex justify-center overflow-auto">
+        <div className={`${className} bg-black flex justify-center overflow-auto`}>
             {children}
         </div>
     );

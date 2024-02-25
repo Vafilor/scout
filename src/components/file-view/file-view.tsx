@@ -13,6 +13,7 @@ import Rectangle from "../loading/rectangle";
 
 interface Props {
     file: AppFile;
+    className?: string;
 }
 
 const TEN_MB = 10 * 1024 * 1024;
@@ -21,7 +22,7 @@ function isTooBig(bytes: number): boolean {
     return bytes > TEN_MB;
 }
 
-export default function FileView({ file: partialFile }: Props) {
+export default function FileView({ file: partialFile, className }: Props) {
     const [viewLargeFile, setViewLargeFile] = useState(false);
     const { value: file, loading } = useAwaitValue(() => FileSystemClient.instance.stat(partialFile.path));
 
@@ -31,14 +32,14 @@ export default function FileView({ file: partialFile }: Props) {
     if (isImage) {
         if (extension?.toLowerCase() === "heic") {
             return (
-                <Layout>
+                <Layout className={className}>
                     <HeicImageFile src={partialFile.path} />
                 </Layout>
             );
         }
 
         return (
-            <Layout>
+            <Layout className={className}>
                 <ImageFile
                     src={partialFile.path}
                     className="object-contain"
@@ -54,7 +55,7 @@ export default function FileView({ file: partialFile }: Props) {
 
     if (isVideo) {
         return (
-            <Layout>
+            <Layout className={className}>
                 <VideoFile
                     src={partialFile.path}
                     controls
@@ -66,7 +67,7 @@ export default function FileView({ file: partialFile }: Props) {
 
     if (loading || !file) {
         return (
-            <Layout>
+            <Layout className={className}>
                 <Rectangle />
             </Layout>
         );
@@ -74,14 +75,14 @@ export default function FileView({ file: partialFile }: Props) {
 
     if (!viewLargeFile && isTooBig(file.size)) {
         return (
-            <div className="flex justify-center items-center p-2">
+            <div className={`${className} flex justify-center items-center p-2`}>
                 <TooBigFile file={file} onConfirmView={() => setViewLargeFile(true)} />
             </div>
         );
     }
 
     return (
-        <div className="flex overflow-auto p-2">
+        <div className={`${className} flex overflow-auto p-2`}>
             <TextFile file={file} />
         </div>
     );
