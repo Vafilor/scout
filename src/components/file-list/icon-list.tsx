@@ -61,28 +61,16 @@ interface Props {
     gap?: number;
     iconSize: number;
     files: AppFile[];
+    className?: string;
+    width: number;
+    height: number;
     setPath: (newPath: string) => void;
 }
 
-export default function IconList({ files, gap: initialGap, iconSize, setPath }: Props) {
-    const headerRef = useRef<HTMLDivElement | null>(null);
-    const { width, height } = useWindowSize();
-
+export default function IconList({ files, gap: initialGap, iconSize, width, height, className, setPath }: Props) {
     const gap = useMemo(() => initialGap ? initialGap : 4, [initialGap]);
 
-    const listHeight = useMemo(() => {
-        if (!headerRef.current || !height) {
-            return 200;
-        }
-
-        return height - headerRef.current.offsetTop - headerRef.current.offsetHeight;
-    }, [height]);
-
     const itemsPerLine = useMemo(() => {
-        if (!width) {
-            return 0;
-        }
-
         return Math.floor(width / (iconSize + gap));
     }, [gap, width, iconSize]);
 
@@ -94,7 +82,7 @@ export default function IconList({ files, gap: initialGap, iconSize, setPath }: 
         const result = partitionList<AppFile | null>(files, itemsPerLine).map((partition, index) => ({
             key: partition.length && partition[0] ? partition[0].path : index,
             files: partition
-        }));
+        })); X
 
         if (result.length) {
             const lastFiles = result[result.length - 1].files;
@@ -107,9 +95,8 @@ export default function IconList({ files, gap: initialGap, iconSize, setPath }: 
     }, [files, itemsPerLine]);
 
     return (
-        <div>
-            <div ref={headerRef}></div>
-            <List data={lineItems} height={listHeight} itemHeight={iconSize + gap} itemKey="key">
+        <div className={className}>
+            <List data={lineItems} height={height} itemHeight={iconSize + gap} itemKey="key">
                 {item => (
                     <div className="flex items-center justify-around py-2 px-2">
                         {item.files.map((file, index) => (

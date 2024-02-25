@@ -1,31 +1,26 @@
-import { useWindowSize } from "@uidotdev/usehooks";
 import List from "rc-virtual-list";
-import { useMemo, useRef } from "react";
+import { useState } from "react";
 import { AppFile } from "../../types/filesystem";
 import FileIcon from "../file-icon";
 import { getExtension } from "../../utils/files";
 
 interface Props {
     files: AppFile[];
+    className?: string;
     setPath: (newPath: string) => void;
+    height: number;
 }
 
-export default function TableList({ files, setPath }: Props) {
-    const headerRef = useRef<HTMLDivElement | null>(null);
-    const { height } = useWindowSize();
-
-    const listHeight = useMemo(() => {
-        if (!headerRef.current || !height) {
-            return 200;
-        }
-
-        return height - headerRef.current.offsetTop - headerRef.current.offsetHeight;
-    }, [height]);
+export default function TableList({ files, setPath, height, className }: Props) {
+    const [headerHeight, setHeaderHeight] = useState(0);
+    const listHeight = height - headerHeight;
 
     return (
-        <div>
-            <div ref={headerRef} className="flex px-2 border-slate-100 border-b">
-                <div className="basis-[30px] shrink-"></div>
+        <div className={className}>
+            <div
+                ref={(node) => setHeaderHeight(node?.offsetHeight || 0)}
+                className="flex px-2 border-slate-100 border-b">
+                <div className="basis-[30px] shrink-0"></div>
                 <div>Name</div>
             </div>
             <List data={files} height={listHeight} itemHeight={30} itemKey="path">
@@ -40,6 +35,6 @@ export default function TableList({ files, setPath }: Props) {
                     </div>
                 )}
             </List>
-        </div>
+        </div >
     );
 }
