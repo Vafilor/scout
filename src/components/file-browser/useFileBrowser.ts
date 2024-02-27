@@ -5,7 +5,7 @@ import Configuration from "app/services/configuration";
 import PathClient from "app/services/path";
 import FileSystemClient from "app/services/filesystem-client";
 
-export default function useFileBrowser(path: string, config: Partial<InitialStateConfig>) {
+export default function useFileBrowser(path: string, config: InitialStateConfig) {
     const [state, dispatch] = useReducer(reducer, config, getInitialState);
 
     const currentFile = useMemo(() => {

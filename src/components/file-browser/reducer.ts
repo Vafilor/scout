@@ -114,7 +114,7 @@ type Action =
 
 export interface InitialStateConfig {
     fileType?: FileType;
-    fileListMode: FileListMode;
+    fileListMode?: FileListMode;
     showHiddenFiles: boolean;
 }
 
@@ -154,6 +154,7 @@ export function getInitialState(config: InitialStateConfig): State {
         files: [],
         currentFileIndex: -1,
         sortColumn: SortableFileColumn.CanonicalName,
+        fileListMode: FileListMode.List,
         ...config
     };
 }
