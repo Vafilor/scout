@@ -1,13 +1,16 @@
+import { FileListMode } from "app/types/filesystem";
 import { IpcMainEvent } from "electron";
 import { writeFile, readFile } from "node:fs/promises";
 
 export interface ConfigurationOptions {
+    fileListMode: FileListMode;
     showHiddenFiles: boolean;
 }
 
 function createDefaultConfiguration(): ConfigurationOptions {
     return {
-        showHiddenFiles: false,
+        fileListMode: FileListMode.List,
+        showHiddenFiles: false
     };
 }
 

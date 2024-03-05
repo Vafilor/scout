@@ -29,7 +29,27 @@ export interface IFilesystemAPI {
 
 export enum FileListMode {
     List = "list",
-    Icons = "icons"
+    ExtraLargeIcons = "extra_large_icons",
+    LargeIcons = "large_icons",
+    MediumIcons = "medium_icons",
+    SmallIcons = "Small",
+}
+
+export function iconListModeToSize(mode: FileListMode): number {
+    if (mode === FileListMode.List) {
+        throw new Error("List mode is not supported");
+    }
+
+    switch (mode) {
+        case FileListMode.SmallIcons:
+            return 64;
+        case FileListMode.MediumIcons:
+            return 128;
+        case FileListMode.LargeIcons:
+            return 256;
+        case FileListMode.ExtraLargeIcons:
+            return 512;
+    }
 }
 
 export interface HeicFileResponse {

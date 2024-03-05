@@ -22,8 +22,20 @@ const FileListModes: FileListModeItem[] = [{
     value: FileListMode.List,
     icon: <RowsIcon />
 }, {
-    name: "Icons",
-    value: FileListMode.Icons,
+    name: "Extra Large icons",
+    value: FileListMode.ExtraLargeIcons,
+    icon: <TokensIcon />
+}, {
+    name: "Large icons",
+    value: FileListMode.LargeIcons,
+    icon: <TokensIcon />
+}, {
+    name: "Medium icons",
+    value: FileListMode.MediumIcons,
+    icon: <TokensIcon />
+}, {
+    name: "Small icons",
+    value: FileListMode.SmallIcons,
     icon: <TokensIcon />
 }];
 
@@ -33,8 +45,7 @@ const FilesystemToolbar = forwardRef<HTMLDivElement, Props>(
         <div ref={ref} className="flex p-1 border-slate-300 border-b gap-2">
             <DropdownMenu.Root>
                 <DropdownMenu.Trigger asChild>
-                    <button type="button" className="flex items-center gap-1"
-                        onClick={() => setMode(mode === FileListMode.Icons ? FileListMode.List : FileListMode.Icons)}>
+                    <button type="button" className="flex items-center gap-1 outline-none select-none">
                         <img src={ListImage} />
                         <span>View</span>
                         <CaretDownIcon />

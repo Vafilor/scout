@@ -230,6 +230,10 @@ export default function useFileBrowser(path: string, config: InitialStateConfig)
             type: ActionType.SetFileListMode,
             payload: listMode
         })
+
+        Configuration.instance.updateOptions({
+            fileListMode: listMode
+        });
     }, [dispatch]);
 
     const setViewHiddenFiles = useCallback((viewHiddenFiles: boolean) => {

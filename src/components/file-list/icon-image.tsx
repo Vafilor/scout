@@ -23,6 +23,5 @@ export default function IconImage({ src, width, height, ...otherProps }: Props) 
         width={width}
         height={height}
         {...otherProps}
-    />
-
+    />;
 }
