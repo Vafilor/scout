@@ -1,4 +1,4 @@
-import { FileListMode, FileType } from "app/types/filesystem";
+import { AppFile, FileListMode, FileType } from "app/types/filesystem";
 import { ActionType, State, getInitialState, reducer } from "./reducer";
 
 function createDefaultInitialState(): State {
@@ -6,6 +6,37 @@ function createDefaultInitialState(): State {
         fileListMode: FileListMode.List,
         showHiddenFiles: false
     });
+}
+
+// Adapted from https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+function createRandomCharacters(length: number) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        counter += 1;
+    }
+    return result;
+}
+
+function createRandomFile({ hidden }: { hidden: boolean }): AppFile {
+    let name = hidden ? "." : "";
+    name += createRandomCharacters(5);
+
+    let path = "/";
+    for (let i = 0; i < 5; i++) {
+        path += createRandomCharacters(10) + "/";
+    }
+
+    path += name;
+
+    return {
+        name,
+        path,
+        type: FileType.File
+    };
 }
 
 describe("reducer", () => {
@@ -70,5 +101,31 @@ describe("reducer", () => {
                 type: FileType.File
             });
         });
+    });
+
+    test("Changing visible files does not change the currently viewed file", () => {
+        const allFiles = [
+            createRandomFile({ hidden: true }),
+            createRandomFile({ hidden: false }),
+            createRandomFile({ hidden: false }),
+        ];
+
+        const state: State = {
+            ...createDefaultInitialState(),
+            allFiles,
+            files: [
+                allFiles[1],
+                allFiles[2]
+            ],
+            currentFileIndex: 0
+        };
+
+        const finalState = reducer(state, {
+            type: ActionType.SetShowHiddenFiles,
+            payload: true
+        });
+
+        const currentFile = finalState.files[finalState.currentFileIndex];
+        expect(currentFile.path).toBe(allFiles[1].path);
     });
 });

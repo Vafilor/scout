@@ -217,10 +217,18 @@ export function reducer(state: State, action: Action): State {
             };
         }
         case ActionType.SetShowHiddenFiles: {
+            const files = processFiles(state.allFiles, { showHiddenFiles: action.payload });
+            let currentFileIndex = state.currentFileIndex;
+            if (currentFileIndex !== -1) {
+                const currentFile = state.files[currentFileIndex];
+                currentFileIndex = files.findIndex((file) => file.path === currentFile.path);
+            }
+
             return {
                 ...state,
                 showHiddenFiles: action.payload,
-                files: processFiles(state.allFiles, { showHiddenFiles: action.payload })
+                files,
+                currentFileIndex
             };
         }
         case ActionType.SetDirectory: {
