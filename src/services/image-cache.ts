@@ -7,6 +7,8 @@ import { fileExists } from "app/server/filesystem";
 import { TaskAction } from "app/workers/types";
 import { NodeJSErrorCode, isNodeJsError } from "app/utils/error";
 import sleep from "app/utils/sleep";
+import { Stats } from "node:fs";
+import { ImageCache as ImageCacheRecord } from "app/db/schema/image-cache";
 
 export default class ImageCache {
     private pendingKeys = new Set<string>();
@@ -45,7 +47,16 @@ export default class ImageCache {
 
         this.pendingKeys.add(key);
 
-        const [stats, dbRecord] = await Promise.all([stat(path), this.imageCacheRepository.findForKey(key)]);
+        let stats: Stats;
+        let dbRecord: ImageCacheRecord | null;
+
+        try {
+            [stats, dbRecord] = await Promise.all([stat(path), this.imageCacheRepository.findForKey(key)]);
+        } catch (err: unknown) {
+            // It is possible for the file to not exist via the stat call
+            this.pendingKeys.delete(key);
+            throw err;
+        }
 
         if (dbRecord !== null && Math.floor(dbRecord.lastModifiedTimeMs) === Math.floor(stats.mtimeMs)) {
             if (await fileExists(dbRecord.cachePath)) {
@@ -65,6 +76,7 @@ export default class ImageCache {
                 }
             }
         }
+
 
         const outputName = randomUUID() + ".jpg"
         const cachedFilePath = resolve(this.cachePath, outputName);
