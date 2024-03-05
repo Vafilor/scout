@@ -3,6 +3,9 @@ import ListImage from "../assets/images/list.svg";
 import { forwardRef } from "react";
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { CaretDownIcon, CheckIcon, DotFilledIcon, RowsIcon, TokensIcon } from "@radix-ui/react-icons";
+import SquareImage from "app/assets/images/square.svg";
+import Grid2x2Image from "app/assets/images/grid-2x2.svg";
+import Grid3x3Image from "app/assets/images/grid-3x3.svg";
 
 interface Props {
     mode: FileListMode;
@@ -17,6 +20,26 @@ interface FileListModeItem {
     value: FileListMode;
 }
 
+const ExtraLargeIcon = <img src={SquareImage} />;
+const LargeIcon = <img src={SquareImage} className="w-[13px] h-[13px]" />;
+const MediumIcon = <img src={Grid2x2Image} />;
+const SmallIcon = <img src={Grid3x3Image} />;
+
+function fileListModeToIcon(mode: FileListMode) {
+    switch (mode) {
+        case FileListMode.List:
+            return <RowsIcon />
+        case FileListMode.ExtraLargeIcons:
+            return ExtraLargeIcon;
+        case FileListMode.LargeIcons:
+            return LargeIcon;
+        case FileListMode.MediumIcons:
+            return MediumIcon;
+        case FileListMode.SmallIcons:
+            return SmallIcon;
+    }
+}
+
 const FileListModes: FileListModeItem[] = [{
     name: "List",
     value: FileListMode.List,
@@ -24,29 +47,28 @@ const FileListModes: FileListModeItem[] = [{
 }, {
     name: "Extra Large icons",
     value: FileListMode.ExtraLargeIcons,
-    icon: <TokensIcon />
+    icon: ExtraLargeIcon
 }, {
     name: "Large icons",
     value: FileListMode.LargeIcons,
-    icon: <TokensIcon />
+    icon: LargeIcon
 }, {
     name: "Medium icons",
     value: FileListMode.MediumIcons,
-    icon: <TokensIcon />
+    icon: MediumIcon
 }, {
     name: "Small icons",
     value: FileListMode.SmallIcons,
-    icon: <TokensIcon />
+    icon: SmallIcon
 }];
 
-// TODO this needs to be redone. Maybe add a toolbar button component?
 const FilesystemToolbar = forwardRef<HTMLDivElement, Props>(
     ({ mode, viewHiddenFiles, setMode, setViewHiddenFiles }, ref) => (
         <div ref={ref} className="flex p-1 border-slate-300 border-b gap-2">
             <DropdownMenu.Root>
                 <DropdownMenu.Trigger asChild>
                     <button type="button" className="flex items-center gap-1 outline-none select-none">
-                        <img src={ListImage} />
+                        {fileListModeToIcon(mode)}
                         <span>View</span>
                         <CaretDownIcon />
                     </button>
