@@ -32,7 +32,7 @@ export default function NavigationList({ currentPath, paths, selectPath }: Props
     return (
         <>
             <div className="p-2">
-                <div className="flex pb-1 mb-1 justify-between items-center border-b text-base">
+                <div className="flex pb-1 mb-1 justify-between items-center border-b text-base select-none">
                     <span>Favorites</span>
                     <button type="button" onClick={() => dispatch({
                         type: ActionType.RequestAddPath

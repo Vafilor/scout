@@ -64,7 +64,7 @@ const FileListModes: FileListModeItem[] = [{
 
 const FilesystemToolbar = forwardRef<HTMLDivElement, Props>(
     ({ mode, viewHiddenFiles, setMode, setViewHiddenFiles }, ref) => (
-        <div ref={ref} className="flex p-1 border-slate-300 border-b gap-2">
+        <div ref={ref} className="flex px-2 py-1 border-slate-300 border-b gap-2">
             <DropdownMenu.Root>
                 <DropdownMenu.Trigger asChild>
                     <button type="button" className="flex items-center gap-1 outline-none select-none">

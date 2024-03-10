@@ -15,6 +15,7 @@ interface Props {
     onSubmit: (data: CreatePathData) => void;
 }
 
+// TODO validation must have a name and path
 export default function NavigationPathDialog({ title, name: initialName, path: initialPath, onClose, onSubmit }: Props) {
     const [name, setName] = useState(initialName ?? "");
     const [path, setPath] = useState(initialPath ?? "");
@@ -29,32 +30,32 @@ export default function NavigationPathDialog({ title, name: initialName, path: i
                     <Dialog.Title className="font-semibold">
                         {title}
                     </Dialog.Title>
-                    <fieldset className="my-4 flex items-center gap-5">
-                        <label className="text-violet11 w-[90px] text-right text-[15px]" htmlFor="name">
+                    <fieldset className="my-4">
+                        <label htmlFor="name">
                             Name
                         </label>
                         <input
                             id="name"
-                            className="shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+                            className="h-[35px] w-full outline-none px-[10px] rounded shadow-[0_0_0_1px] focus:shadow-[0_0_0_2px]"
                             value={name}
                             onChange={(event) => setName(event.currentTarget.value)}
                         />
                     </fieldset>
-                    <fieldset className="mb-4 flex items-center gap-5">
-                        <label className="text-violet11 w-[90px] text-right text-[15px]" htmlFor="path">
+                    <fieldset className="mb-4">
+                        <label htmlFor="path">
                             Path
                         </label>
                         <input
                             id="path"
-                            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+                            className="h-[35px] w-full outline-none px-[10px] rounded shadow-[0_0_0_1px] focus:shadow-[0_0_0_2px]"
                             value={path}
                             onChange={(event) => setPath(event.currentTarget.value)}
                         />
                     </fieldset>
-                    <div className="mt-[25px] flex justify-end">
+                    <div className="flex justify-end">
                         <Dialog.Close asChild>
                             <button
-                                className="bg-green4 text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
+                                className="bg-emerald-300 hover:bg-emerald-500 px-4 py-2 rounded focus:outline-none focus:shadow-[0_0_0_2px]"
                                 onClick={() => onSubmit({
                                     name,
                                     path
@@ -65,7 +66,7 @@ export default function NavigationPathDialog({ title, name: initialName, path: i
                     </div>
                     <Dialog.Close asChild>
                         <button
-                            className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+                            className="absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                             aria-label="Close"
                             onClick={() => onClose()}
                         >
