@@ -3,7 +3,8 @@ import { join } from "node:path";
 export enum ConfigurationNames {
     AppSettings = "configuration.json",
     ImageCache = "image_cache",
-    FileDatabase = "file_database.db"
+    FileDatabase = "file_database.db",
+    NavigationPathSettings = "navigationPath.json"
 }
 
 export interface ConstantsArguments {

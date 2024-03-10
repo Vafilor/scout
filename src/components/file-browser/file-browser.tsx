@@ -12,6 +12,10 @@ import SplitPane from "../split-pane/split-pane";
 import { useWindowSize } from "@uidotdev/usehooks";
 import Rectangle from "../loading/rectangle";
 import { State } from "./reducer";
+import { AppFile } from "app/types/filesystem";
+import { humanizeSize } from "app/utils/files";
+import NavigationList from "../navigation-list/navigation-list";
+import NavigationPaths from "app/services/navigation-paths";
 
 interface Props {
     path: string;
@@ -20,6 +24,9 @@ interface Props {
 }
 
 export function FileBrowser({ path, config, className }: Props) {
+    const { value: navigationPaths, loading: navigationPathsLoading } =
+        useAwaitValue(() => NavigationPaths.instance.get());
+
     const [navigationToolbarHeight, setNavigationToolbarHeight] = useState(0);
     const [filesystemToolbarHeight, setFilesystemToolbarHeight] = useState(0);
     const [footerHeight, setFooterHeight] = useState(0);
@@ -93,7 +100,14 @@ export function FileBrowser({ path, config, className }: Props) {
                 setViewHiddenFiles={setViewHiddenFiles}
             />
             <SplitPane
-                first={<div>Left</div>}
+                // TODO better loading
+                first={(
+                    navigationPathsLoading ? <div>Loading</div> :
+                        <NavigationList
+                            currentPath={pathInfo?.path}
+                            paths={navigationPaths ?? []}
+                            selectPath={(path) => setPath(path)}
+                        />)}
                 renderSecond={(width) => (
                     state.loadingFileContent ? (
                         <div className="grow" style={{ height: contentHeight }}>
@@ -116,6 +130,7 @@ export function FileBrowser({ path, config, className }: Props) {
                         />
                     )
                 )}
+                hideFirst={!!currentFile}
                 defaultWidth={180}
                 minWidth={100}
                 totalWidth={width ?? 0}
@@ -123,6 +138,7 @@ export function FileBrowser({ path, config, className }: Props) {
             />
             <Footer
                 ref={(node) => setFooterHeight(node?.offsetHeight || 0)}
+                currentFile={currentFile}
                 state={state}
             />
         </div>
@@ -155,13 +171,18 @@ export default function PathFileBrowser() {
     );
 }
 
-const Footer = forwardRef<HTMLDivElement, { state: State }>(({ state }, ref) => {
+const Footer = forwardRef<HTMLDivElement, { currentFile: AppFile | undefined, state: State }>(({ state, currentFile }, ref) => {
     return (
         <div
             ref={ref}
             className="px-2 py-1 shrink-0 text-sm text-left">
-            {state.loadingFileContent ? "Loading..." : (
-                <span>{state.files.length} {pluralizeItems(state.files.length)}</span>
+            {state.loadingFileContent ? "Loading..." : currentFile ? (
+                <div className="flex justify-between">
+                    <span>{currentFile.name}</span>
+                    <span>{currentFile.size && humanizeSize(currentFile.size)}</span>
+                </div>
+            ) : (
+                <div>{state.files.length} {pluralizeItems(state.files.length)}</div>
             )}
         </div>
     );

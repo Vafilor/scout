@@ -8,6 +8,7 @@ export default class FilesystemServer {
 
         const dir = await opendir(path);
         for await (const dirent of dir) {
+            // TODO if you can't stat this, push an error into the listing
             const stats = await stat(dirent.path);
             files.push({
                 name: dirent.name,

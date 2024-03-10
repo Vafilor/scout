@@ -4,13 +4,24 @@ import { useEffect, useMemo, useState } from "react";
 interface Props {
     first: React.ReactNode;
     renderSecond: (width: number) => React.ReactNode;
+    hideFirst?: boolean;
+    hideSecond?: boolean;
     defaultWidth: number;
     minWidth: number;
     totalWidth: number;
     className?: string;
 }
 
-export default function SplitPane({ first, renderSecond, defaultWidth, minWidth, totalWidth, className }: Props) {
+export default function SplitPane({
+    first,
+    renderSecond,
+    hideFirst,
+    hideSecond,
+    defaultWidth,
+    minWidth,
+    totalWidth,
+    className
+}: Props) {
     const [width, setWidth] = useState(defaultWidth);
     const [mouseDown, setMouseDown] = useState(false);
 
@@ -46,6 +57,14 @@ export default function SplitPane({ first, renderSecond, defaultWidth, minWidth,
 
         return () => document.removeEventListener("mouseup", func);
     }, [setMouseDown])
+
+    if (hideFirst) {
+        return <>{renderSecond(totalWidth)}</>;
+    }
+
+    if (hideSecond) {
+        return <>{first}</>;
+    }
 
     return (
         <div className={`${className} flex`}>

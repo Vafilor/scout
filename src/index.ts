@@ -2,7 +2,8 @@ import { app, BrowserWindow, ipcMain, IpcMainInvokeEvent, protocol, net } from '
 import { stat, readFile } from "node:fs/promises";
 import { basename, join } from "node:path";
 import { AppFile, HeicFileResponse } from './types/filesystem';
-import Store from './configuration/store';
+import ConfigurationStore from './configuration/store';
+import NavigationPathStore from "./navigation-paths/store";
 import WorkerPool from './workers/worker-pool';
 import os from 'node:os';
 import { TaskAction } from './workers/types';
@@ -112,7 +113,8 @@ app.whenReady().then(async () => {
   Constants.init(constantsArgs);
   pool = new WorkerPool(os.availableParallelism(), constantsArgs);
 
-  const store = new Store(join(userDataPath, ConfigurationNames.AppSettings));
+  const configurationStore = new ConfigurationStore(join(userDataPath, ConfigurationNames.AppSettings));
+  const navigationPathStore = new NavigationPathStore(join(userDataPath, ConfigurationNames.NavigationPathSettings));
 
   database = new Manager(join(userDataPath, ConfigurationNames.FileDatabase));
   await database.migrate()
@@ -135,8 +137,10 @@ app.whenReady().then(async () => {
   ipcMain.handle('filesystem-file-stat', filesystemFileStat);
   ipcMain.handle('filesystem-get-home-directory', () => app.getPath('home'));
   ipcMain.handle('filesystem-get-image-icon-path', filesystemGetImageIconPath)
-  ipcMain.handle('config-get', store.getOptions.bind(store));
-  ipcMain.handle('config-update', store.update.bind(store));
+  ipcMain.handle('config-get', configurationStore.getOptions.bind(configurationStore));
+  ipcMain.handle('config-update', configurationStore.update.bind(configurationStore));
+  ipcMain.handle('navigation-paths-get', navigationPathStore.get.bind(navigationPathStore));
+  ipcMain.handle('navigation-paths-update', navigationPathStore.update.bind(navigationPathStore));
 
   ipcMain.handle('filesystem-get-heic-file', filesystemGetHeicFile);
 

@@ -85,8 +85,13 @@ is currently copied over with `CopyPlugin` (see webpack.main.config.ts), and mar
 - [ ] Upgrade to tslint strict
 - [ ] remove unused packages
 - [x] On windows, when you go to root "/", display the list of drives to go to
-- [ ] Update top menu to indicate current state of file listing mode. Is it table or icons?
-- [ ] Update top menu to have dropdowns with options like view hidden files 
+- [x] Update top menu to indicate current state of file listing mode. Is it table or icons?
+- [x] Update top menu to have dropdowns with options like view hidden files 
 - [ ] Support image caching for thumbnails of various sizes
 - [ ] Choose a file thumbnail size
 - [ ] Better Readme with screenshots and gifs
+- [x] Hide left panel when viewing a file
+- [x] Footer shows total files when viewing a file. It should be file info.
+- [] Show drives on windows in Left side panel
+- [] Allow re-ordering left-side panel
+- [] Allow editing left-side panel items

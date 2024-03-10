@@ -7,18 +7,22 @@ import { IFilesystemAPI } from './types/filesystem';
 import { IConfigurationAPI } from './types/configuration';
 import Configuration from './services/configuration';
 import { IEnvironmentAPI } from './types/environment';
+import NavigationPaths from './services/navigation-paths';
+import { INavigationPathAPI } from './types/navigation-paths';
 
 declare global {
     // eslint-disable-next-line no-unused-vars
     interface Window {
         appFilesystem: IFilesystemAPI;
         appConfig: IConfigurationAPI;
+        appNavigationPaths: INavigationPathAPI;
         environment: IEnvironmentAPI;
     }
 }
 
 FileSystemClient.init(window.appFilesystem);
 Configuration.init(window.appConfig);
+NavigationPaths.init(window.appNavigationPaths)
 PathClient.init(window.environment.platform === "win32" ? new WindowsPathClient() : new IxPathClient());
 
 const rootElement = document.getElementById("root");

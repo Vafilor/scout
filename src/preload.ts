@@ -4,6 +4,7 @@ import { contextBridge, ipcRenderer } from "electron";
 import { AppFile } from "./types/filesystem";
 import { ConfigurationOptions } from "./configuration/store";
 import { PathLike } from "node:fs";
+import { NavigationPath } from "./navigation-paths/types";
 
 contextBridge.exposeInMainWorld('environment', {
     platform: process.platform
@@ -23,4 +24,9 @@ contextBridge.exposeInMainWorld('appFilesystem', {
 contextBridge.exposeInMainWorld('appConfig', {
     getOptions: (): Promise<ConfigurationOptions> => ipcRenderer.invoke('config-get'),
     updateOptions: (options: Partial<ConfigurationOptions>) => ipcRenderer.invoke('config-update', options)
+});
+
+contextBridge.exposeInMainWorld('appNavigationPaths', {
+    get: (): Promise<NavigationPath[]> => ipcRenderer.invoke('navigation-paths-get'),
+    update: (paths: NavigationPath[]) => ipcRenderer.invoke('navigation-paths-update', paths)
 });
